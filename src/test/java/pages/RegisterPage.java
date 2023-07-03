@@ -1,5 +1,7 @@
 package pages;
 
+import data.functions.GetHomePage;
+import data.functions.TestBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,15 +10,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class RegisterPage {
+public class RegisterPage extends GetHomePage {
 
-    private final WebDriver driver;
-
-    public RegisterPage(WebDriver driver) {
-        this.driver = driver;
+    public RegisterPage(WebDriver driver, WebDriverWait wait) {
+        TestBase.driver = driver;
+        GetHomePage.wait = wait;
     }
 
-    private final By loader = By.cssSelector(".Modal_modal__loading__3534A");
     private final By nameInputField = By.xpath(".//label[contains (text(), 'Имя')]/parent::*/input[@class = 'text input__textfield text_type_main-default']");
     private final By emailInputField = By.xpath(".//label[contains (text(), 'Email')]/parent::*/input[@class = 'text input__textfield text_type_main-default']");
     private final By passwordInputField = By.xpath(".//label[contains (text(), 'Пароль')]/parent::*/input[@class = 'text input__textfield text_type_main-default']");
@@ -35,14 +35,12 @@ public class RegisterPage {
 
     public void clickRegisterButton(){
         driver.findElement(registerButton).click();
-        new WebDriverWait(driver, Duration.ofSeconds(3))
-                .until(ExpectedConditions.elementToBeClickable(emailInputField));
+        wait.until(ExpectedConditions.elementToBeClickable(emailInputField));
     }
 
     public void clickEntryLinkButton(){
         driver.findElement(entryLinkButton).click();
-        new WebDriverWait(driver, Duration.ofSeconds(3))
-                .until(ExpectedConditions.invisibilityOfElementLocated(loader));
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
     }
 
     public WebElement getErrorMessage(){
