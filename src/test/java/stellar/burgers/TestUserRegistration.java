@@ -31,14 +31,13 @@ public class TestUserRegistration extends GetHomePage {
         registerPage.clickRegisterButton();
 
         Response response = userClient.loginUser(email, password);
+        String accessToken = response.jsonPath().getString("accessToken").substring(7);
+        userClient.deleteUser(accessToken);
         response.then().assertThat()
                 .statusCode(200)
                 .body("success", equalTo(true))
                 .body("user.email", equalTo(email.toLowerCase()))
                 .body("user.name", equalTo(name));
-
-        String accessToken = response.jsonPath().getString("accessToken").substring(7);
-        userClient.deleteUser(accessToken);
     }
 
     @Test
